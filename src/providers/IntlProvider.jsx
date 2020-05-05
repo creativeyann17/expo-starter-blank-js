@@ -11,10 +11,14 @@ const mapStateToProps = (state) => {
   };
 };
 
-const I18nLayout = (props) => {
+const I18nProvider = (props) => {
   debug('Current locale:', props.locale);
 
-  return <View key={props.locale}>{props.children}</View>;
+  return (
+    <View style={{ flex: 1 }} key={props.locale}>
+      {props.children}
+    </View>
+  );
 };
 
-export default connect(mapStateToProps)(I18nLayout);
+export default connect(mapStateToProps)(I18nProvider);

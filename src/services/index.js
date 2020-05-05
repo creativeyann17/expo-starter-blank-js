@@ -3,11 +3,17 @@ import { applyMiddleware, createStore, combineReducers, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
 
+import awakeServiceReducer from './awakeService/reducer';
 import intlServiceSaga from './intlService';
 import intlServiceReducer from './intlService/reducer';
+import themeServiceReducer from './themeService/reducer';
 
 export default function configureStore() {
-  const rootReducer = combineReducers({ intlServiceReducer });
+  const rootReducer = combineReducers({
+    awakeServiceReducer,
+    intlServiceReducer,
+    themeServiceReducer,
+  });
 
   function* rootSaga() {
     yield all([intlServiceSaga]);

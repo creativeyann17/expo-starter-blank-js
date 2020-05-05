@@ -18,10 +18,10 @@ export const init = () => {
     'fr-FR': fr_FR,
   };
   i18n.defaultLocale = DEFAULT_LOCALE;
-  i18n.locale = getSystemLocale();
   i18n.fallbacks = true;
+  setLocale(getSystemLocale());
 
-  debug('Init i18n locale:', i18n.locale);
+  debug('Init locale:', i18n.locale);
 
   return i18n.currentLocale();
 };

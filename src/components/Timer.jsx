@@ -11,16 +11,21 @@ import {
   Portal,
   Switch,
 } from 'react-native-paper';
+import { connect } from 'react-redux';
+
+import * as awakeActions from '../services/awakeService/actions';
+import * as awakeSelectors from '../services/awakeService/selectors';
+import * as themeActions from '../services/themeService/actions';
+import * as themeSelectors from '../services/themeService/selectors';
 
 const PRECISION = 1000;
 
-function Timer({ theme }) {
+const Timer = ({ theme, isDarkMode, setDarkMode, isKeepAwake, setKeepAwake }) => {
   const [state, setState] = React.useState({
     count: 0,
     lastTimeout: 0,
     running: false,
     precision: PRECISION,
-    darkMode: theme.dark,
     dialog: false,
   });
 
@@ -76,10 +81,6 @@ function Timer({ theme }) {
     )}:${toStr(date.getMilliseconds(), 3)}`;
   };
 
-  const toggleDarkMode = () => {
-    setState({ ...state, darkMode: !state.darkMode });
-  };
-
   const setDialogVisible = (visible) => {
     setState({ ...state, dialog: visible });
   };
@@ -105,12 +106,10 @@ function Timer({ theme }) {
     <View style={styles.container}>
       <View style={styles.center}>
         <View style={styles.switchView}>
-          <Text>Dark mode</Text>
-          <Switch
-            style={styles.switch}
-            value={state.darkMode}
-            onValueChange={() => toggleDarkMode()}
-          />
+          <Text style={styles.switchText}>Keep awake</Text>
+          <Switch value={isKeepAwake} onValueChange={(value) => setKeepAwake(value)} />
+          <Text style={styles.switchText}>Dark mode</Text>
+          <Switch value={isDarkMode} onValueChange={(value) => setDarkMode(value)} />
         </View>
         <Text style={styles.counter}>{formatDate(date)}</Text>
         <Button mode="contained" disabled={state.running} onPress={start} style={styles.button}>
@@ -151,7 +150,7 @@ function Timer({ theme }) {
       </View>
     </View>
   );
-}
+};
 
 const styles = EStyleSheet.create({
   switchView: {
@@ -160,8 +159,9 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  switch: {
+  switchText: {
     marginLeft: '.75rem',
+    marginRight: '.75rem',
   },
   slider: {
     marginTop: '2rem',
@@ -181,25 +181,13 @@ const styles = EStyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    flexDirection: 'column',
-    paddingLeft: '3rem',
-    paddingRight: '3rem',
-    paddingTop: '2rem',
-    ...Platform.select({
-      web: {
-        maxWidth: 500,
-        margin: 'auto',
-      },
-    }),
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: '3rem',
   },
   dialog: {
     alignSelf: 'center',
-    ...Platform.select({
-      web: {
-        maxWidth: 500,
-        margin: 'auto',
-      },
-    }),
+    margin: 'auto',
   },
   counter: {
     marginTop: '1rem',
@@ -229,4 +217,18 @@ const styles = EStyleSheet.create({
   },
 });
 
-export default withTheme(Timer);
+const mapStateToProps = (state) => {
+  return {
+    isDarkMode: themeSelectors.isDarkMode(state),
+    isKeepAwake: awakeSelectors.isKeepAwake(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setDarkMode: (isDarkMode) => dispatch(themeActions.setDarkMode(isDarkMode)),
+    setKeepAwake: (isKeepAwake) => dispatch(awakeActions.setKeepAwake(isKeepAwake)),
+  };
+};
+
+export default withTheme(connect(mapStateToProps, mapDispatchToProps)(Timer));

@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { withTheme } from 'react-native-paper';
 
 import Header from '../components/Header';
 import Timer from '../components/Timer';
 
-const WebLayout = () => {
+const WebLayout = ({ theme }) => {
   return (
-    <View>
+    <View style={[{ flex: 1 }, { backgroundColor: theme.colors.background }]}>
       <Header />
       <View style={styles.container}>
         <Timer />
@@ -16,7 +17,11 @@ const WebLayout = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row' },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
-export default WebLayout;
+export default withTheme(WebLayout);
