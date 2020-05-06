@@ -1,7 +1,6 @@
 import { Appearance } from 'react-native-appearance';
 import { DefaultTheme, DarkTheme, Colors } from 'react-native-paper';
 
-import { debug } from '../../utils/logger';
 import * as actionTypes from './actionTypes';
 
 const defaultTheme = {
@@ -23,8 +22,6 @@ const darkTheme = {
 };
 
 const systemColorScheme = Appearance.getColorScheme();
-
-debug('Init systemColorScheme:', systemColorScheme);
 
 const initialState = {
   systemColorScheme,

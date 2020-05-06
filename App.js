@@ -1,5 +1,4 @@
 import { AppLoading, Logs } from 'expo';
-import { deactivateKeepAwake } from 'expo-keep-awake';
 import includes from 'lodash/includes';
 import React, { Suspense } from 'react';
 import { Platform } from 'react-native';
@@ -10,6 +9,7 @@ import LoadingLayout from './src/layouts/LoadingLayout';
 import IntlProvider from './src/providers/IntlProvider';
 import ThemeProvider from './src/providers/ThemeProvider';
 import configureStore from './src/services';
+import { setKeepAwake } from './src/services/awakeService/actions';
 
 const WebLayout = React.lazy(() => import('./src/layouts/WebLayout'));
 const MobileLayout = React.lazy(() => import('./src/layouts/MobileLayout'));
@@ -17,20 +17,19 @@ const MobileLayout = React.lazy(() => import('./src/layouts/MobileLayout'));
 export default function App() {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
 
-  const store = configureStore();
-
   async function loadAppAsync() {
     if (__DEV__ && Platform.OS !== 'web') {
       // Logs.disableExpoCliLogging();
     }
-
-    deactivateKeepAwake();
 
     EStyleSheet.clearCache();
     EStyleSheet.build();
   }
 
   if (isLoadingComplete) {
+    const store = configureStore();
+    store.dispatch(setKeepAwake(true));
+
     return (
       <StoreProvider store={store}>
         <ThemeProvider>

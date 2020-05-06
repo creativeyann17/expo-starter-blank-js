@@ -2,7 +2,6 @@ import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import get from 'lodash/get';
 
-import { debug } from '../../utils/logger';
 import en_US from './intl/en_US';
 import fr_FR from './intl/fr_FR';
 
@@ -20,8 +19,6 @@ export const init = () => {
   i18n.defaultLocale = DEFAULT_LOCALE;
   i18n.fallbacks = true;
   setLocale(getSystemLocale());
-
-  debug('Init locale:', i18n.locale);
 
   return i18n.currentLocale();
 };

@@ -1,14 +1,9 @@
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 
-import { debug } from '../../utils/logger';
 import * as actionTypes from './actionTypes';
 
-const initKeepAwake = true;
-
-debug('Init keepAwake:', initKeepAwake);
-
 const initialState = {
-  isKeepAwake: initKeepAwake,
+  isKeepAwake: false,
 };
 
 export default function (state = initialState, action) {
