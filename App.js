@@ -6,7 +6,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { Provider as StoreProvider } from 'react-redux';
 
 import LoadingLayout from './src/layouts/LoadingLayout';
-import IntlProvider from './src/providers/IntlProvider';
+import { IntlProvider } from './src/providers/IntlProvider';
 import ThemeProvider from './src/providers/ThemeProvider';
 import configureStore from './src/services';
 import { setKeepAwake } from './src/services/awakeService/actions';
@@ -33,11 +33,11 @@ export default function App() {
     return (
       <StoreProvider store={store}>
         <ThemeProvider>
-          <Suspense fallback={<LoadingLayout />}>
-            <IntlProvider>
+          <IntlProvider>
+            <Suspense fallback={<LoadingLayout />}>
               {includes(['android', 'ios'], Platform.OS) ? <MobileLayout /> : <WebLayout />}
-            </IntlProvider>
-          </Suspense>
+            </Suspense>
+          </IntlProvider>
         </ThemeProvider>
       </StoreProvider>
     );

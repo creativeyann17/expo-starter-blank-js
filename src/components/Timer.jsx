@@ -18,6 +18,8 @@ import * as awakeSelectors from '../services/awakeService/selectors';
 import * as themeActions from '../services/themeService/actions';
 import * as themeSelectors from '../services/themeService/selectors';
 
+import { useIntl } from '../providers/IntlProvider';
+
 const PRECISION = 1000;
 
 const Timer = ({ theme, isDarkMode, setDarkMode, isKeepAwake, setKeepAwake }) => {
@@ -102,10 +104,19 @@ const Timer = ({ theme, isDarkMode, setDarkMode, isKeepAwake, setKeepAwake }) =>
     );
   };
 
+  const [intlSate, intlDispatch] = useIntl();
+
   return (
     <View style={styles.container}>
       <View style={styles.center}>
         <View style={styles.switchView}>
+          <Text style={styles.switchText}>Lang</Text>
+          <Switch
+            value={intlSate.locale === 'fr-FR'}
+            onValueChange={(value) =>
+              intlDispatch({ type: 'setLocale', locale: value ? 'fr-FR' : 'en-US' })
+            }
+          />
           <Text style={styles.switchText}>Keep awake</Text>
           <Switch value={isKeepAwake} onValueChange={(value) => setKeepAwake(value)} />
           <Text style={styles.switchText}>Dark mode</Text>
@@ -155,7 +166,7 @@ const Timer = ({ theme, isDarkMode, setDarkMode, isKeepAwake, setKeepAwake }) =>
 const styles = EStyleSheet.create({
   switchView: {
     flexDirection: 'row',
-    alignSelf: 'flex-end',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
   },

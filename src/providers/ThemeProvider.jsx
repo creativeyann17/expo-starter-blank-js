@@ -13,8 +13,8 @@ const mapStateToProps = (state) => {
 };
 
 const ThemeProvider = (props) => {
-  debug('Current theme:', props.theme);
-  debug('Current systemColorScheme:', props.systemColorScheme);
+  debug('ThemeProvider theme:', props.theme);
+  debug('ThemeProvider systemColorScheme:', props.systemColorScheme);
 
   return <PaperProvider theme={props.theme}>{props.children}</PaperProvider>;
 };
